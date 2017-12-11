@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>资产服务监控</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="esun">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <![endif]-->
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script src="http://gallerybox.echartsjs.com/dep/echarts/latest/echarts.min.js"></script>
+</head>
+<body>
+<div class="wrap-fluid">
+    <div class="container-fluid paper-wrap">
+        <div class="row">
+            <div class="page-header">
+                <strong>资产服务监控</strong>
+                <span id="btn-fullscreen" class="glyphicon glyphicon-fullscreen pull-right page-header-tools"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="well left-wrap">
+                    <div id="chart-assets" class="dark-chart"></div>
+                    <div class="dark-chart-badge">
+                        <div class="col-lg-4 text-center">
+                            <span class="badge big-badge badge-primary" id="chart-dadge-all">0</span>
+                            <span class="badge-txt">近七日报警总数</span>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <span class="badge big-badge badge-warning" id="chart-dadge-normal">0</span>
+                            <span class="badge-txt">正常报警</span>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <span class="badge big-badge badge-danger" id="chart-dadge-abnormal">0</span>
+                            <span class="badge-txt">数据不足</span>
+                        </div>
+                    </div>
+                    <div id="chart-flow" class="dark-chart"></div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div id="chart-top" class="dark-chart" style="height: 900px"></div>
+            </div>
+            <div class="col-lg-3">
+                <div class="well right-wrap">
+                    <div id="chart-cpu" class="dark-chart"></div>
+                    <div id="chart-ram" class="dark-chart"></div>
+                    <div id="chart-disk" class="dark-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/script.js"></script>
+
+<script type="text/javascript">
+    var isFullScreen = false;
+    var chart1,chart2,chart3,chart4,chart5,chart6;
+
+    $(function () {
+        $("#btn-fullscreen").click(function () {
+            if (isFullScreen) {
+                exitFullscreen();
+            } else {
+                requestFullScreen();
+            }
+            isFullScreen = !isFullScreen;
+        });
+
+        init();
+        loadata();
+
+        //测试
+        testFlow();
+        window.setInterval(testFlow,1000*10);
+    });
+
+    function init() {
+        var $chart1= $('#chart-assets');
+        chart1 = echarts.init($chart1[0], curTheme);
+        chart1.setOption(assetsOption);
+        //chart1.showLoading();
+
+        var $chart2= $('#chart-flow');
+        chart2 = echarts.init($chart2[0], curTheme);
+        chart2.setOption(flowOption);
+        //chart2.showLoading();
+
+        var $chart3= $('#chart-cpu');
+        chart3 = echarts.init($chart3[0], curTheme);
+        chart3.setOption(cpuOption);
+        //chart3.showLoading();
+
+        var $chart4= $('#chart-ram');
+        chart4 = echarts.init($chart4[0], curTheme);
+        chart4.setOption(ramOption);
+        //chart4.showLoading();
+
+        var $chart5= $('#chart-disk');
+        chart5 = echarts.init($chart5[0], curTheme);
+        chart5.setOption(diskOption);
+        //chart5.showLoading();
+
+        var $chart6= $('#chart-top');
+        chart6 = echarts.init($chart6[0], curTheme);
+        chart6.setOption(topOption);
+        chart6.on('click', function (params) {
+            // 点击弹窗
+            if (params.dataType == "node") {
+                console.log(params.data.clazz);
+                alert(params.data.id);
+            }
+        });
+        //chart6.showLoading();
+    }
+
+    function loadata() {
+        $.post('assets/json/getWarn.json',{},function (data) {
+            $("#chart-dadge-all").text(data[0]);
+            $("#chart-dadge-normal").text(data[1]);
+            $("#chart-dadge-abnormal").text(data[2]);
+        });
+
+        $.post('assets/json/getCounts.json',{},function (data) {
+            categories = [];
+            var tol=0;
+            $.each(data,function (i,item) {
+                tol+=item.count;
+                categories.push({name:item.title,value:item.count});
+            });
+
+            var option = {
+                title: {
+                    subtext: '共'+tol+'台'
+                },
+                legend: {
+                    data: categories.map(function (a) {
+                        return a.name;
+                    })
+                },
+                series: [
+                    {
+                        data: categories
+                    }
+                ]
+            };
+            chart1.setOption(option);
+            //chart1.hideLoading();
+        });
+
+        $.post('assets/json/getCpu.json',{},function (data) {
+            var option = {
+                xAxis:{
+                    data:data.x
+                },
+                series: [
+                    {
+                        data: data.y
+                    }
+                ]
+            };
+            chart3.setOption(option);
+            chart3.hideLoading();
+        });
+
+        $.post('assets/json/getRam.json',{},function (data) {
+            var option = {
+                xAxis:{
+                    data:data.x
+                },
+                series: [
+                    {
+                        data: data.y
+                    }
+                ]
+            };
+            chart4.setOption(option);
+            chart4.hideLoading();
+        });
+
+        $.post('assets/json/getDisk.json',{},function (data) {
+            var option = {
+                xAxis:{
+                    data:data.x
+                },
+                series: [
+                    {
+                        data: data.y
+                    }
+                ]
+            };
+            chart5.setOption(option);
+            chart5.hideLoading();
+        });
+
+        $.post('assets/json/getTop.json',{},function (ret) {
+            var data=[];
+            var links=[];
+            if(ret.data!=undefined&&ret.data!=null&&ret.data.nodes!=undefined&&ret.data.nodes!=null&&ret.data.nodes.length>0) {
+                $.each(ret.data.nodes, function (i, item) {
+                    data.push({id: item.id, name: item.name==undefined?"":item.name, value: item.address==undefined?"":item.address,symbol: item.image, category: item.category,clazz: item.clazz==undefined?"":item.clazz});
+                });
+                $.each(ret.data.edges, function (i, item) {
+                    links.push({target: item.to, source: item.from, value: item.length});
+                });
+            }
+            var option = {
+                legend: [{
+                    data: categories.map(function (a) {
+                        return a.name;
+                    })
+                }],
+                series: [
+                    {
+                        data: data,
+                        links:links,
+                        categories: categories,
+                    }
+                ]
+            };
+            chart6.setOption(option);
+            chart6.hideLoading();
+        });
+
+    }
+
+    //进入全屏
+    function requestFullScreen() {
+        var de = document.documentElement;
+        if (de.requestFullscreen) {
+            de.requestFullscreen();
+        } else if (de.mozRequestFullScreen) {
+            de.mozRequestFullScreen();
+        } else if (de.webkitRequestFullScreen) {
+            de.webkitRequestFullScreen();
+        }
+    }
+
+    //退出全屏
+    function exitFullscreen() {
+        var de = document;
+        if (de.exitFullscreen) {
+            de.exitFullscreen();
+        } else if (de.mozCancelFullScreen) {
+            de.mozCancelFullScreen();
+        } else if (de.webkitCancelFullScreen) {
+            de.webkitCancelFullScreen();
+        }
+    }
+
+    //测试数据模拟数据流入流出
+    function testFlow(){
+        var str1=[];
+        var str2=[];
+        for (var i=0;i<=6;i++)
+        {
+            str1.push(GetRandomNum());
+            str2.push(GetRandomNum());
+        }
+        var option = {
+            series: [
+                {
+                    name: '流入',
+                    data: str1
+                },{
+                    name: '流出',
+                    data: str2
+                }
+            ]
+        };
+        chart2.setOption(option);
+        chart2.hideLoading();
+    }
+    function GetRandomNum()
+    {
+        return(0 + Math.round(Math.random() * 100 - 0));
+    }
+</script>
+</body>
+</html>

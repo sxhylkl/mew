@@ -1,0 +1,181 @@
+{
+  "code": "0",
+  "message": null,
+  "data": {
+    "nodes": [
+      {
+        "image": "image://http://localhost:8888/image/network/network.png",
+        "shape": "image",
+        "category": "服务器",
+        "id": "0"
+      },
+      {
+        "id": "CB350AB8DD1546E9BE2F482E96189572",
+        "shape": "image",
+        "image": "image://http://localhost:8888/image/network/physics_1.png",
+        "label": "WIN-THPVV6EL74S\n(10.83.3.77)",
+        "pid": null,
+        "name": "WIN-THPVV6EL74S",
+        "enable": "1",
+        "address": "10.83.3.77",
+        "type": "11",
+        "category": "服务器",
+        "clazz": "1",
+        "updateTime": "2017-09-20 15:27:03"
+      },
+      {
+        "id": "C37BB716A2B24A69A3178537613402C1",
+        "shape": "image",
+        "image": "image://http://localhost:8888/image/network/default_0.png",
+        "label": "org.apache.catalina.startup.Bootstrap start:8081\n(image://http://10.83.3.77:8081)",
+        "pid": "CB350AB8DD1546E9BE2F482E96189572",
+        "name": "org.apache.catalina.startup.Bootstrap start:8081",
+        "enable": "1",
+        "address": "image://http://10.83.3.77:8081",
+        "type": "28",
+        "category": "企业应用",
+        "clazz": "2",
+        "updateTime": "2017-09-22 15:45:17"
+      },
+      {
+        "id": "D6DDFBAB7DEA4ACFB6262DD4DB2BF099",
+        "shape": "image",
+        "image": "image://http://localhost:8888/image/network/default_0.png",
+        "label": "org.apache.catalina.startup.Bootstrap start:8080\n(image://http://10.83.4.193:8080)",
+        "pid": "99DEEA431B584295ACD59CE4535AEF43",
+        "name": "org.apache.catalina.startup.Bootstrap start:8080",
+        "enable": "1",
+        "address": "image://http://10.83.4.193:8080",
+        "type": "28",
+        "category": "企业应用",
+        "clazz": "2",
+        "updateTime": null
+      },
+      {
+        "id": "99DEEA431B584295ACD59CE4535AEF43",
+        "shape": "image",
+        "image": "image://http://localhost:8888/image/network/physics_1.png",
+        "label": "LAPTOP-6PAOHRTU\n(10.83.4.193)",
+        "pid": null,
+        "name": "LAPTOP-6PAOHRTU",
+        "enable": "1",
+        "address": "10.83.4.193",
+        "type": "11",
+        "category": "服务器",
+        "clazz": "1",
+        "updateTime": "2017-09-14 12:33:17"
+      },
+      {
+        "id": "4C13B8D200C346469AA133EAA4B6C0FC",
+        "shape": "image",
+        "image": "image://http://localhost:8888/image/network/physics_1.png",
+        "label": "DESKTOP-FH73QSI\n(10.83.3.32)",
+        "pid": null,
+        "name": "DESKTOP-FH73QSI",
+        "enable": "1",
+        "address": "10.83.3.32",
+        "type": "11",
+        "category": "服务器",
+        "clazz": "1",
+        "updateTime": "2017-10-10 13:50:18"
+      },
+      {
+        "id": "8E9F41F8D51F4A81A56CB29BA376B37C",
+        "shape": "image",
+        "image": "image://http://localhost:8888/image/network/default_0.png",
+        "label": "tomcat\n(image://http://10.83.3.32:8080)",
+        "pid": "4C13B8D200C346469AA133EAA4B6C0FC",
+        "name": "tomcat",
+        "enable": "1",
+        "address": "image://http://10.83.3.32:8080",
+        "type": "28",
+        "category": "企业应用",
+        "clazz": "2",
+        "updateTime": null
+      },
+      {
+        "id": "9B5DC2C1CD08498299ACAF6C771E1587",
+        "shape": "image",
+        "image": "image://http://localhost:8888/image/network/redis_0.png",
+        "label": "sentinel\n(10.83.2.121:26379)",
+        "pid": "CB350AB8DD1546E9BE2F482E96189572",
+        "name": "sentinel",
+        "enable": "1",
+        "address": "10.83.2.121:26379",
+        "type": "41",
+        "category": "NOSQL",
+        "clazz": "4",
+        "updateTime": null
+      },
+      {
+        "id": "B44E508A2DA5425285080B647F6C5EFB",
+        "shape": "image",
+        "image": "image://http://localhost:8888/image/network/redis_0.png",
+        "label": "master\n(10.83.2.121:6379)",
+        "pid": "CB350AB8DD1546E9BE2F482E96189572",
+        "name": "master",
+        "enable": "1",
+        "address": "10.83.2.121:6379",
+        "type": "41",
+        "category": "NOSQL",
+        "clazz": "4",
+        "updateTime": null
+      }
+    ],
+    "edges": [
+      {
+        "id": "CB350AB8DD1546E9BE2F482E96189572",
+        "from": "CB350AB8DD1546E9BE2F482E96189572",
+        "to": 0,
+        "length": 250
+      },
+      {
+        "id": "C37BB716A2B24A69A3178537613402C1",
+        "from": "C37BB716A2B24A69A3178537613402C1",
+        "to": "CB350AB8DD1546E9BE2F482E96189572",
+        "length": 200
+      },
+      {
+        "id": "D6DDFBAB7DEA4ACFB6262DD4DB2BF099",
+        "from": "D6DDFBAB7DEA4ACFB6262DD4DB2BF099",
+        "to": "99DEEA431B584295ACD59CE4535AEF43",
+        "length": 200
+      },
+      {
+        "id": "99DEEA431B584295ACD59CE4535AEF43",
+        "from": "99DEEA431B584295ACD59CE4535AEF43",
+        "to": 0,
+        "length": 250
+      },
+      {
+        "id": "4C13B8D200C346469AA133EAA4B6C0FC",
+        "from": "4C13B8D200C346469AA133EAA4B6C0FC",
+        "to": 0,
+        "length": 250
+      },
+      {
+        "id": "8E9F41F8D51F4A81A56CB29BA376B37C",
+        "from": "8E9F41F8D51F4A81A56CB29BA376B37C",
+        "to": "4C13B8D200C346469AA133EAA4B6C0FC",
+        "length": 200
+      },
+      {
+        "id": "9B5DC2C1CD08498299ACAF6C771E1587",
+        "from": "9B5DC2C1CD08498299ACAF6C771E1587",
+        "to": "CB350AB8DD1546E9BE2F482E96189572",
+        "length": 200
+      },
+      {
+        "id": "B44E508A2DA5425285080B647F6C5EFB",
+        "from": "B44E508A2DA5425285080B647F6C5EFB",
+        "to": "CB350AB8DD1546E9BE2F482E96189572",
+        "length": 200
+      }
+    ]
+  },
+  "attributes": {
+    "licenseUID": "XMN.uid",
+    "licenseCode": "1000"
+  },
+  "success": true
+}

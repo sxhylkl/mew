@@ -1,0 +1,17 @@
+[
+  {
+    "class": "HOST",
+    "title": "服务器",
+    "count": 5
+  },
+  {
+    "class": "APP",
+    "title": "企业应用",
+    "count": 3
+  },
+  {
+    "class": "NOSQL",
+    "title": "NOSQL",
+    "count": 3
+  }
+]
